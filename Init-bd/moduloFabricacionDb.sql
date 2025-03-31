@@ -1,7 +1,5 @@
--- Creación de la base de datos
 CREATE DATABASE moduloFabricacion;
 GO
-
 -- Seleccionar la base de datos para trabajar
 USE moduloFabricacion;
 GO
@@ -190,7 +188,7 @@ FOREIGN KEY (id_departamento) REFERENCES departamentos(id_departamento);
 
 -- Tabla de Órdenes de Producción (con IDENTITY en ambos campos)
 CREATE TABLE ordenes_produccion (
-    id_orden INT IDENTITY(1,1) PRIMARY KEY,
+    id_orden INT IDENTITY(1001,1) PRIMARY KEY,
     id_producto INT NOT NULL,  
     cantidad DECIMAL(10,2) NOT NULL,
     estado VARCHAR(20) CHECK (estado IN ('Pendiente', 'En proceso', 'Finalizada', 'Cancelada')) NOT NULL,
@@ -322,7 +320,11 @@ INSERT INTO operarios (carnet, nombre, estado, tiempo_hora, thumbnail_url, foto_
 VALUES 
 ('OPE001', 'Hugo García', 'Activo', 7.00, 'ruta/thumb_hugo.jpg', 'ruta/foto_hugo.jpg', 2), 
 ('OPE002', 'Leo Martínez', 'Inactivo', 0.00, 'ruta/thumb_leo.jpg', 'ruta/foto_leo.jpg', 3),  
-('OPE003', 'Omar González', 'Inactivo', 0.00, 'ruta/thumb_omar.jpg', 'ruta/foto_omar.jpg', 4); 
+('OPE003', 'Omar González', 'Inactivo', 0.00, 'ruta/thumb_omar.jpg', 'ruta/foto_omar.jpg', 4),
+('OPE004', 'Ana Rodríguez', 'Activo', 4.00, 'ruta/thumb_ana.jpg', 'ruta/foto_ana.jpg', 1),
+('OPE005', 'Carlos Martínez', 'Activo', 3.00, 'ruta/thumb_carlos.jpg', 'ruta/foto_carlos.jpg', 2),
+('OPE006', 'Eduardo Rojas', 'Inactivo', 0.00, 'ruta/thumb_eduardo.jpg', 'ruta/foto_eduardo.jpg', 3),
+('OPE007', 'Verónica Morales', 'Inactivo', 0.00, 'ruta/thumb_veronica.jpg', 'ruta/foto_veronica.jpg', 2); 
 
 INSERT INTO materiales (codigo_material, nombre_material, descripcion, stock, costo_por_unidad, ancho, largo, alto, tipo, thumbnail_url, foto_url) VALUES 
 ('M1001', 'MDF Estándar 18mm', 'Tablero para núcleo de puertas entamboradas', 2000, 195.00, 1220, 2440, 18, 'Materia Prima', 'https://ejemplo.com/thumb/mdf.jpg', 'https://ejemplo.com/full/mdf.jpg'),
@@ -359,47 +361,47 @@ GO
 
 INSERT INTO seguimiento_produccion (id_orden, estado, avance, tiempo_trabajado, material_consumido, id_operario, fecha_actualizacion)
 VALUES 
-(1, 'En proceso', 0.40, 5.50, 60, 1, '2025-04-01'), 
-(2, 'En proceso', 0.25, 2.30, 20, 2, '2025-04-05'),  
-(3, 'En proceso', 0.60, 6.00, 70, 3, '2025-04-20');  
+(1001, 'En proceso', 0.40, 5.50, 60, 1, '2025-04-01'), 
+(1002, 'En proceso', 0.25, 2.30, 20, 2, '2025-04-05'),  
+(1003, 'En proceso', 0.60, 6.00, 70, 3, '2025-04-20');  
 GO
 
 
 INSERT INTO reportes (id_orden, id_producto, cantidad, tiempo_produccion, estado, fecha_generacion) 
 VALUES 
-(1, 1, 50, 5.5, 'En proceso', '2025-04-20'),
-(2, 2, 32, 2.3, 'En proceso', '2025-04-20'),
-(3, 3, 32, 2.3, 'En proceso', '2025-04-20');
+(1001, 1, 50, 5.5, 'En proceso', '2025-04-20'),
+(1002, 2, 32, 2.3, 'En proceso', '2025-04-20'),
+(1003, 3, 32, 2.3, 'En proceso', '2025-04-20');
 GO
 
 INSERT INTO orden_Materiales (id_orden, id_material, cantidad_utilizada, desperdicio)
 VALUES 
 -- Puerta Entambonada (asumiendo que id_orden = 1, id_material = 1, 2, 3...)
-(1, 1, 1250, 50),  
-(1, 2, 50, 2),      
-(1, 3, 75, 3),     
-(1, 4, 50, 2),     
+(1001, 1, 1250, 50),  
+(1001, 2, 50, 2),      
+(1001, 3, 75, 3),     
+(1001, 4, 50, 2),     
 
 -- Puerta Plegable (asumiendo que id_orden = 2)
-(2, 2, 30, 1),     
-(2, 5, 30, 1),    
-(2, 6, 600, 12),    
-(2, 4, 38, 1),    
-(2, 7, 11, 1),      
-(2, 8, 11, 0),      
+(1002, 2, 30, 1),     
+(1002, 5, 30, 1),    
+(1002, 6, 600, 12),    
+(1002, 4, 38, 1),    
+(1002, 7, 11, 1),      
+(1002, 8, 11, 0),      
 
 -- Puerta Amparo (asumiendo que id_orden = 3)
-(3, 9, 12, 0),     
-(3, 10, 12, 1),    
-(3, 11, 24, 1),    
-(3, 12, 48, 2),     
-(3, 8, 12, 0),      
-(3, 13, 12, 1);     
+(1003, 9, 12, 0),     
+(1003, 10, 12, 1),    
+(1003, 11, 24, 1),    
+(1003, 12, 48, 2),     
+(1003, 8, 12, 0),      
+(1003, 13, 12, 1);     
 
 
 INSERT INTO detalle_producto_material (id_producto, id_material, cantidad_requerida)
 VALUES 
--- Puerta Entambonada (asumiendo: 'PR001' = ID 1, 'M1001' = ID 1, etc.)
+-- Puerta Entambonada 'PR001' = ID 1, 'M1001' = ID 1, etc.
 (1, 1, 1),    
 (1, 2, 4),    
 (1, 3, 0.5),  
@@ -407,7 +409,7 @@ VALUES
 (1, 5, 1),   
 (1, 6, 20),  
 
--- Puerta Plegable (asumiendo: 'PR002' = ID 2)
+-- Puerta Plegable 'PR002' = ID 2)
 (2, 2, 6),    
 (2, 7, 2),  
 (2, 8, 2),   
@@ -416,7 +418,7 @@ VALUES
 (2, 6, 30),   
 (2, 11, 0.8), 
 
--- Puerta Amparo (asumiendo: 'PR003' = ID 3)
+-- Puerta Amparo 'PR003' = ID 3)
 (3, 12, 1),   
 (3, 13, 2.5),
 (3, 7, 4),   
